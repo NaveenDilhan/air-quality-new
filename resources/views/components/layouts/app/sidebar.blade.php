@@ -17,6 +17,36 @@
                 </flux:navlist.group>
             </flux:navlist>
 
+            <!-- New Section for Management -->
+            <flux:navlist variant="outline">
+                <flux:navlist.group :heading="__('Management')" class="grid">
+                    <!-- Sensor Management Link with Custom Icon -->
+                    <flux:navlist.item>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-sensors" viewBox="0 0 16 16">
+                            <path d="M8 0a7 7 0 1 0 0 14A7 7 0 0 0 8 0zM3.5 8a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"/>
+                        </svg>
+                        {{ __('Sensor Management') }}
+                    </flux:navlist.item>
+            
+                    <!-- User Management Link with Custom Icon -->
+                    <flux:navlist.item>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM8 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2zm0 10a4 4 0 0 0-3-1.732A4.992 4.992 0 0 1 4 9a4 4 0 0 0-1 3.732c.2.255.407.499.625.732a6 6 0 0 0 6 0c.218-.233.425-.477.625-.732A4 4 0 0 0 8 12z"/>
+                        </svg>
+                        {{ __('User Management') }}
+                    </flux:navlist.item>
+            
+                    <!-- AQI Data Management Link with Custom Icon -->
+                    <flux:navlist.item>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                            <path d="M0 0h16v16H0V0zm12 13H4v-1h8v1zm-4-4V5H8v4H6V5H4v8h8V9h-2z"/>
+                        </svg>
+                        {{ __('AQI Data Management') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
+            </flux:navlist>
+            
+
             <flux:spacer />
 
             <flux:navlist variant="outline">

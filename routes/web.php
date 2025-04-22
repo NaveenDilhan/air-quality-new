@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
 // Static Page Routes
 Route::view('map', 'map')->name('map');
+Route::get('/history/{sensor_id}', [AqiController::class, 'history'])->name('history');
 Route::view('privacy', 'privacy')->name('privacy');
 Route::view('terms', 'terms')->name('terms');
 

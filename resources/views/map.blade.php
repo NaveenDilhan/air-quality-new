@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * {
             margin: 0;
@@ -171,7 +172,6 @@
         .aqi-level:hover .aqi-level-tooltip {
             display: block;
         }
-
     </style>
 </head>
 <body>
@@ -217,12 +217,14 @@
     </div>
 
     <script>
+        const historyRouteBase = "{{ route('history', ['sensor_id' => ':id']) }}";
+
         var map = L.map('map', {
             scrollWheelZoom: false
         }).setView([6.9375, 80.0167], 12); // Colombo Coordinates
-        
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+            attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
         function fetchSensorData() {
@@ -283,6 +285,7 @@
         }
 
         function createPopupContent(sensor) {
+            const historyUrl = historyRouteBase.replace(':id', sensor.sensor_id);
             return `
                 <div class="popup-content">
                     <h4>${sensor.location}</h4>
@@ -293,6 +296,7 @@
                     <p><b>PM10:</b> ${sensor.pm10_level} µg/m³</p>
                     <p><b>NO2 Level:</b> ${sensor.no2_level} ppb</p>
                     <p><b>SO2 Level:</b> ${sensor.so2_level} ppb</p>
+                    <p><a href="${historyUrl}" style="color: #00ccff; text-decoration: none; font-weight: bold;">View History</a></p>
                 </div>
             `;
         }

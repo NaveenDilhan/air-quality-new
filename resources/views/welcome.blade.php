@@ -36,12 +36,24 @@
     <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 relative z-10">
         @if (Route::has('login'))
             <nav class="flex items-center justify-between bg-black bg-opacity-70 px-6 py-4 rounded-lg">
-                <h1 class="text-lg font-semibold text-green-400"> Colombo Air Quality Monitor</h1>
+                <h1 class="text-lg font-semibold text-green-400">Colombo Air Quality Monitor</h1>
                 <div class="flex gap-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
-                            Dashboard
-                        </a>
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
+                                Admin Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('user-dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
+                                Dashboard
+                            </a>
+                        @endif
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm">
+                                Logout
+                            </button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm">
                             Log in
@@ -113,7 +125,7 @@
         <div class="flex flex-col items-center justify-center gap-4">
             <p class="text-sm">&copy; 2025 Colombo Air Quality Monitoring. All rights reserved.</p>
             <div class="text-sm">
-                <a href="{{ url('/terms') }}" class="text-green-400 hover:text-green-500">Terms and Conditions</a>|
+                <a href="{{ url('/terms') }}" class="text-green-400 hover:text-green-500">Terms and Conditions</a> |
                 <a href="{{ url('/privacy') }}" class="text-green-400 hover:text-green-500">Privacy Policy</a> 
             </div>
             <div class="mt-4 text-gray-300 text-sm">

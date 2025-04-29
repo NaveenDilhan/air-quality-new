@@ -10,7 +10,7 @@ class SensorController extends Controller
     // Method for managing sensors
     public function index()
     {
-        // Your logic for managing sensors
+        
         return view('sensor-management');
     }
 

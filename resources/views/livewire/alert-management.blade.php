@@ -7,7 +7,7 @@
         </div>
     @endif
 
-    {{-- ✅ NEW: Generate AQI Alerts Button --}}
+    {{--Generate AQI Alerts Button --}}
     <div class="mb-6">
         <button 
             wire:click="generateAqiAlerts" 

@@ -13,10 +13,10 @@ class DashboardController extends Controller
     public function index()
     {
         // Fetching the latest AQI data for real-time data chart
-        $aqiData = AqiData::latest()->take(4)->get();  // Example: getting the last 4 records
+        $aqiData = AqiData::latest()->take(4)->get();  
         
         // Fetch the sensors for displaying in the cards
-        $sensors = Sensor::all(); // You can adjust this to fetch specific sensors or data
+        $sensors = Sensor::all(); 
 
         return view('dashboard', compact('aqiData', 'sensors'));
     }

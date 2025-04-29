@@ -9,17 +9,6 @@ class Sensor extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     * Optional: Uncomment if the table name differs from Laravel's convention ('sensors').
-     */
-    // protected $table = 'sensors';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'id',
         'sensor_id',

@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Call the SensorSeeder
         $this->call([
             SensorSeeder::class,
         ]);

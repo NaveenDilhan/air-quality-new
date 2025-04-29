@@ -28,7 +28,6 @@
             position: relative;
         }
 
-        /* Loading overlay */
         .loading-overlay {
             position: absolute;
             top: 0;
@@ -57,7 +56,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Popup styling */
         .leaflet-popup-content {
             font-size: 1rem;
             color: #fff;
@@ -171,7 +169,7 @@
             max-width: 600px;
         }
 
-        /* AQI Circle Animations */
+    
         .leaflet-circle {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
@@ -280,7 +278,7 @@
         // Configuration
         const CONFIG = {
             API_URL: '/api/sensors',
-            MAP_CENTER: [6.9375, 80.0167], // Colombo Coordinates
+            MAP_CENTER: [6.9375, 80.0167], 
             MAP_ZOOM: 12,
             MAX_RETRIES: 3,
             RETRY_DELAY: 2000,

@@ -10,7 +10,7 @@ class UserDashboardController extends Controller
 {
     public function index()
     {
-        // Fetch sensors and AQI data (adjust based on user permissions)
+        // Fetch sensors and AQI data 
         $sensors = Sensor::all();
         $aqiData = AqiData::with('sensor')->latest()->take(10)->get();
 

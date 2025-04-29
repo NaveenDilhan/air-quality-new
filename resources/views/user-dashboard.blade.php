@@ -19,7 +19,6 @@
                 </div>
             </div>
 
-            <!-- Add extra space below the banner for avatar -->
             <div class="mt-20 text-center px-6 pb-8">
                 <h2 class="text-3xl font-semibold text-gray-900 dark:text-white">
                     {{ Auth::user()->name }}

@@ -34,39 +34,32 @@
 
     <!-- Header Section -->
     <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 relative z-10">
-        @if (Route::has('login'))
-            <nav class="flex items-center justify-between bg-black bg-opacity-70 px-6 py-4 rounded-lg">
-                <h1 class="text-lg font-semibold text-green-400">Colombo Air Quality Monitor</h1>
-                <div class="flex gap-4">
-                    @auth
-                        @if(auth()->user()->role === 'admin')
-                            <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
-                                Admin Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('user-dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
-                                Dashboard
-                            </a>
-                        @endif
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm">
-                                Logout
-                            </button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm">
-                            Log in
+        <nav class="flex items-center justify-between bg-black bg-opacity-70 px-6 py-4 rounded-lg">
+            <h1 class="text-lg font-semibold text-green-400">Colombo Air Quality Monitor</h1>
+            <div class="flex gap-4">
+                @auth
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
+                            Admin Dashboard
                         </a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-sm">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                </div>
-            </nav>
-        @endif
+                    @else
+                        <a href="{{ url('/user-dashboard') }}" class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
+                            Dashboard
+                        </a>
+                    @endif
+
+                @else
+                    <a href="{{ route('login') }}" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm">
+                        Log in
+                    </a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-sm">
+                            Register
+                        </a>
+                    @endif
+                @endauth
+            </div>
+        </nav>
     </header>
 
     <!-- Hero Section -->
@@ -79,8 +72,8 @@
             <a href="{{ url('/map') }}" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg hover-zoom">
                 View Live Data
             </a>
-            <a href="#subscribe" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg hover-zoom">
-                Subscribe Alerts
+            <a href="{{ url('/alerts') }}" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg hover-zoom">
+                View Alerts
             </a>
         </div>
     </main>

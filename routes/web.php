@@ -5,8 +5,8 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SensorController;
 use App\Http\Controllers\AqiController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlertController;
+use App\Http\Controllers\UserDashboardController;
 use App\Http\Middleware\AdminMiddleware;
 
 /*
@@ -25,9 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home');
 
     // 🧑‍💻 User Dashboard (separate from admin dashboard)
-    Route::get('/user-dashboard', function () {
-        return view('user-dashboard');  // Make sure the view 'user-dashboard.blade.php' exists
-    })->name('user-dashboard');
+    Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
 });
 
 // ⚙️ Settings Pages (for all authenticated users)
@@ -53,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Volt::route('/sensor-management', 'sensor-management')->name('sensor-management');
         Volt::route('/user-management', 'user-management')->name('user-management');
         Volt::route('/aqi-data-management', 'aqi-data-management')->name('aqi-data-management');
+        Volt::route('/alert-management', 'alert-management')->name('alert-management');
     });
 });
 
@@ -61,5 +60,9 @@ Route::get('/api/sensors', [SensorController::class, 'fetchSensors'])
     ->name('api.sensors')
     ->middleware('throttle:60,1');  // Throttle to prevent too many requests in a short time
 
+// 📣 Alerts Page (For showing alerts to users)
+Route::get('/alerts', [AlertController::class, 'alerts'])->name('alerts'); // Added the alerts route
+
 // 🔐 Auth Routes
 require __DIR__.'/auth.php';  // Ensure your authentication routes are correctly set up
+?>

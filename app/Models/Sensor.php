@@ -9,25 +9,45 @@ class Sensor extends Model
 {
     use HasFactory;
 
-    // Define the table name if it's not following Laravel's naming convention (optional)
+    /**
+     * The table associated with the model.
+     * Optional: Uncomment if the table name differs from Laravel's convention ('sensors').
+     */
     // protected $table = 'sensors';
 
-    // Define the fillable attributes to allow mass assignment
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'sensor_id', 'location', 'latitude', 'longitude', 'is_active',
+        'id',
+        'sensor_id',
+        'location',
+        'latitude',
+        'longitude',
+        'is_active',
     ];
 
-    // Define the attributes that should be cast to native types
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
         'is_active' => 'boolean',
     ];
 
-    // You can also add relationships if needed, such as to the `AqiData` model
+    /**
+     * Define the relationship with the AqiData model.
+     * A sensor can have many AQI data records.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function aqiData()
     {
-        return $this->hasMany(AqiData::class);
+        return $this->hasMany(AqiData::class, 'sensor_id', 'id');
     }
 }
-

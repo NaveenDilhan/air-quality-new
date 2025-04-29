@@ -11,30 +11,42 @@ class SensorManagement extends Component
 {
     use WithPagination;
 
-    #[Rule('required|string|max:255|unique:sensors,sensor_id')]
+    // Make search and filter available via query string
+    public $search = '';
+    public $filterStatus = '';
+
     public $sensor_id = '';
-
-    #[Rule('required|string|max:255')]
     public $location = '';
-
-    #[Rule('required|numeric|between:-90,90')]
     public $latitude = '';
-
-    #[Rule('required|numeric|between:-180,180')]
     public $longitude = '';
-
-    #[Rule('required|boolean')]
     public $is_active = true;
 
     public $editingSensorId = null;
 
-    // NEW: For delete confirmation
     public $showDeleteModal = false;
     public $sensorToDelete = null;
 
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filterStatus' => ['except' => ''],
+    ];
+
+    #[Rule('required|string|max:255|unique:sensors,sensor_id')]
+    public $rules = [
+        'sensor_id' => 'required|string|max:255|unique:sensors,sensor_id',
+        'location' => 'required|string|max:255',
+        'latitude' => 'required|numeric|between:-90,90',
+        'longitude' => 'required|numeric|between:-180,180',
+        'is_active' => 'required|boolean',
+    ];
+
     public function create()
     {
-        $this->validate();
+        $this->validateOnly('sensor_id');
+        $this->validateOnly('location');
+        $this->validateOnly('latitude');
+        $this->validateOnly('longitude');
+        $this->validateOnly('is_active');
 
         Sensor::create([
             'sensor_id' => $this->sensor_id,
@@ -51,7 +63,8 @@ class SensorManagement extends Component
     public function edit($id)
     {
         $sensor = Sensor::findOrFail($id);
-        $this->editingSensorId = $id;
+
+        $this->editingSensorId = $sensor->id;
         $this->sensor_id = $sensor->sensor_id;
         $this->location = $sensor->location;
         $this->latitude = $sensor->latitude;
@@ -61,8 +74,13 @@ class SensorManagement extends Component
 
     public function update()
     {
-        $this->rules['sensor_id'] = "required|string|max:255|unique:sensors,sensor_id,{$this->editingSensorId}";
-        $this->validate();
+        $this->validate([
+            'sensor_id' => 'required|string|max:255|unique:sensors,sensor_id,' . $this->editingSensorId,
+            'location' => 'required|string|max:255',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'is_active' => 'required|boolean',
+        ]);
 
         Sensor::findOrFail($this->editingSensorId)->update([
             'sensor_id' => $this->sensor_id,
@@ -76,7 +94,6 @@ class SensorManagement extends Component
         session()->flash('message', 'Sensor updated successfully.');
     }
 
-    // Replaces delete($id) with confirmation flow
     public function confirmDelete($id)
     {
         $this->sensorToDelete = $id;
@@ -99,15 +116,50 @@ class SensorManagement extends Component
         $this->resetForm();
     }
 
+    public function clearFilters()
+    {
+        $this->search = '';
+        $this->filterStatus = '';
+    }
+
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, ['search', 'filterStatus'])) {
+            $this->resetPage();
+        }
+    }
+
     private function resetForm()
     {
-        $this->reset(['sensor_id', 'location', 'latitude', 'longitude', 'is_active', 'editingSensorId']);
+        $this->reset([
+            'sensor_id',
+            'location',
+            'latitude',
+            'longitude',
+            'is_active',
+            'editingSensorId',
+        ]);
     }
 
     public function render()
     {
+        $query = Sensor::query();
+
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('sensor_id', 'like', '%' . $this->search . '%')
+                  ->orWhere('location', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        if ($this->filterStatus !== '') {
+            $query->where('is_active', $this->filterStatus);
+        }
+
+        $sensors = $query->orderBy('created_at', 'desc')->paginate(10);
+
         return view('livewire.sensor-management', [
-            'sensors' => Sensor::paginate(10),
+            'sensors' => $sensors,
         ]);
     }
 }

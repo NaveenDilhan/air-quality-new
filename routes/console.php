@@ -10,4 +10,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // ✅ Add this to schedule your AQI simulation command
-Schedule::command('simulate:aqidata')->everyFiveMinutes();
+Schedule::command('simulate:aqidata')->everyTenMinutes();
+
+Schedule::command('aqi:generate-alerts')->everyThirtyMinutes(); 

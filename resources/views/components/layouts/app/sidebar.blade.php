@@ -49,20 +49,20 @@
                         <span>{{ __('AQI Data Management') }}</span>
                     </div>
                 </flux:navlist.item>
+
+                <!-- Alert Management -->
+                <flux:navlist.item :href="route('alert-management')" :current="request()->routeIs('alert-management')" wire:navigate>
+                    <div class="flex items-center gap-2 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="text-current" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8" />
+                        </svg>
+                        <span>{{ __('Alert Management') }}</span>
+                    </div>
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
         <flux:spacer />
-
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
-
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-            </flux:navlist.item>
-        </flux:navlist>
 
         <!-- Desktop User Menu -->
         <flux:dropdown position="bottom" align="start">

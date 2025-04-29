@@ -17,14 +17,14 @@ class GenerateSimulatedAqiData extends Command
         $sensors = Sensor::where('is_active', true)->get();
 
         foreach ($sensors as $sensor) {
-            $co2 = rand(300, 1000); // ppm
-            $o2 = rand(190000, 210000) / 10000; // percentage
-            $pm25 = rand(5, 150); // µg/m3
-            $pm10 = rand(10, 200); // µg/m3
-            $no2 = rand(10, 200); // ppb
-            $so2 = rand(5, 150); // ppb
+            $co2 = rand(300, 1000); 
+            $o2 = rand(190000, 210000) / 10000; 
+            $pm25 = rand(5, 150); 
+            $pm10 = rand(10, 200); 
+            $no2 = rand(10, 200); 
+            $so2 = rand(5, 150); 
 
-            // Basic AQI calculation (just for demo — can use a formula if needed)
+            // Basic AQI calculation 
             $aqi = intval(($pm25 + $pm10 + $no2 + $so2) / 4);
 
             AqiData::create([

@@ -3,32 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\AqiData;
+use App\Models\Sensor;
 use Illuminate\Http\Request;
 
 class AqiController extends Controller
 {
-    /**
-     * Display the AQI management page.
-     */
-    public function index()
-    {
-        // Your logic for managing AQI data
-        return view('aqi-management');
-    }
-
-    /**
-     * Display the AQI history for a specific sensor.
-     */
     public function history($sensor_id)
     {
-        if (!is_numeric($sensor_id)) {
-            abort(404, 'Invalid sensor ID');
+        $sensor = Sensor::findOrFail($sensor_id);
+        $aqiData = AqiData::where('sensor_id', $sensor_id)->get();
+        $averages = AqiData::where('sensor_id', $sensor_id)
+            ->selectRaw('AVG(aqi) as aqi, AVG(co2_level) as co2_level, AVG(pm25_level) as pm25_level')
+            ->first();
+
+        return view('history', compact('sensor', 'aqiData', 'averages'));
+    }
+
+    public function aqiHistoryApi(Request $request, $sensor_id)
+    {
+        $query = AqiData::where('sensor_id', $sensor_id);
+
+        // Apply date filters
+        if ($request->start_date) {
+            $query->whereDate('recorded_at', '>=', $request->start_date);
+        }
+        if ($request->end_date) {
+            $query->whereDate('recorded_at', '<=', $request->end_date);
         }
 
-        $records = AqiData::where('sensor_id', $sensor_id)
-            ->orderBy('recorded_at', 'desc')
-            ->paginate(20);
+        // Apply sorting
+        if ($request->sort_by && $request->sort_direction) {
+            $query->orderBy($request->sort_by, $request->sort_direction);
+        } else {
+            $query->orderBy('recorded_at', 'desc');
+        }
 
-        return view('history', compact('records', 'sensor_id'));
+        $data = $query->get();
+        $averages = AqiData::where('sensor_id', $sensor_id)
+            ->selectRaw('AVG(aqi) as aqi, AVG(co2_level) as co2_level, AVG(pm25_level) as pm25_level')
+            ->first();
+
+        return response()->json([
+            'data' => $data,
+            'averages' => $averages
+        ]);
     }
 }
